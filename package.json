@@ -1,0 +1,43 @@
+{
+  "name": "ovidlay",
+  "version": "0.0.1",
+  "description": "Customizable YouTube video overlay for React.js",
+  "main": "dist/index.js",
+  "scripts" : {
+    "build": "./node_modules/.bin/babel src --out-file dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/teamcandor/ovidlay.git"
+  },
+  "keywords": [
+    "React",
+    "YouTube",
+    "Overlay",
+    "React.js",
+    "Node.js",
+    "HTML",
+    "CSS",
+    "JavaScript"
+  ],
+  "author": "Tim Leonard <tim@candor.co>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/teamcandor/ovidlay/issues"
+  },
+  "homepage": "https://github.com/teamcandor/ovidlay#readme",
+  "peerDependencies": {
+    "react": ">=15.0.1",
+    "react-dom": ">=15.0.1"
+  },
+  "devDependencies": {
+    "react": ">=15.0.1",
+    "react-dom": ">=15.0.1"
+  },
+  "dependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.11.0",
+    "@babel/preset-env": "^7.11.0",
+    "@babel/preset-react": "^7.10.4"
+  }
+}
