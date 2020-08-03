@@ -91,7 +91,7 @@ const VideoPlayer = ({ children, videoId, height, width, themeColor = "black", s
       setProgress(e.target.getCurrentTime())
     }
     else {
-      setTimeout(() => {}, 1000)
+      setTimeout(() => {}, 1500)
     }
   }
 
