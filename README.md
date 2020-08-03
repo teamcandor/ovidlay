@@ -38,3 +38,10 @@ width | number | Y | width (in pixels) of the video
 themeColor | string | N | Background color for the overlay controls, defaults to black (#000000)
 sliderPrimaryColor | string | N | Color of the progress and volume sliders in the overlay controls, defaults to red (#ff0000)
 sliderSecondaryColor | string | N | Color of progress and volume slider backgrounds, defaults to white (#ffffff) 
+
+## Contribute
+
+Issues, Pull Requests, and feedback are all welcome!
+
+Built and maintained by [Candor](https://candor.co)
+
