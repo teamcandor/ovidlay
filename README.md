@@ -22,4 +22,4 @@ import Ovidlay from "ovidlay"
   </div>
 </Ovidlay>
 ```
-![image](https://user-images.githubusercontent.com/24358521/89209064-937f8600-d58b-11ea-96f7-31404fbdb1b4.png)
+![image](https://user-images.githubusercontent.com/24358521/89209205-d8a3b800-d58b-11ea-9c65-fe578b1c0857.png)
