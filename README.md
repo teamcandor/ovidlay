@@ -27,3 +27,14 @@ import Ovidlay from "ovidlay"
 </Ovidlay>
 ```
 ![image](https://user-images.githubusercontent.com/24358521/89209205-d8a3b800-d58b-11ea-9c65-fe578b1c0857.png)
+
+## Props
+
+Name | Type | Required | Description
+--- | --- | --- | ---
+videoId | string | Y | YouTube video id to be used by the video player
+height | number | Y | height (in pixels) of the video
+width | number | Y | width (in pixels) of the video
+themeColor | string | N | Background color for the overlay controls, defaults to black (#000000)
+sliderPrimaryColor | string | N | Color of the progress and volume sliders in the overlay controls, defaults to red (#ff0000)
+sliderSecondaryColor | string } N | color of progress and volume slider backgrounds, defaults to white (#ffffff) 
