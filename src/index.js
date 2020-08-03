@@ -12,7 +12,7 @@ import VolumeLow from "../assets/video_volume_low.svg"
 import VolumeMed from "../assets/video_volume_med.svg"
 import VolumeMax from "../assets/video_volume_max.svg"
 
-const VideoPlayer = ({ children, videoId, height, width }) => {
+const VideoPlayer = ({ children, videoId, height, width, themeColor = "black", sliderPrimaryColor = "red", sliderSecondaryColor = "white" }) => {
   const durationWidth = 300
   const volumeWidth = 80
   const thumbRadius = 20
@@ -33,9 +33,7 @@ const VideoPlayer = ({ children, videoId, height, width }) => {
           controls: 0,
           enablejsapi: 1,
           rel: 0,
-          fs: 0,
-          cc_lang_pref: "en",
-          cc_load_policy: 1,
+          fs: 0
         }
       })
     )
@@ -91,6 +89,9 @@ const VideoPlayer = ({ children, videoId, height, width }) => {
     const sliderStatus = document.getElementById("progressSlider").getAttribute("data-is-progress-drag")
     if (!sliderStatus || sliderStatus === "false") {
       setProgress(e.target.getCurrentTime())
+    }
+    else {
+      setTimeout(() => {}, 1000)
     }
   }
 
@@ -203,16 +204,16 @@ const VideoPlayer = ({ children, videoId, height, width }) => {
     <div id={`parent-${videoId}`} className={styles.parentContainer} style={{ height: `${height}px`, width: `${width}px` }}>
       <div id={`player-${videoId}`} className={styles.video}></div>
       {!isPlaying && (
-        <div className={styles.playButton} onClick={() => player.playVideo()}>
+        <div className={styles.playButton} onClick={() => player.playVideo()} style={{ backgroundColor: themeColor }}>
           <VideoPlay />
         </div>
       )}
       <div className={styles.controlsContainer}>
-        <div className={styles.controls}>
+        <div className={styles.controls} style={{ backgroundColor: themeColor }}>
           <div onClick={togglePlay}>
             {isPlaying ? <VideoPause className={styles.button} /> : <VideoPlay className={styles.button} />}
           </div>
-          <div id="progressSlider" className={styles.progressBar} style={{ width: `${durationWidth}px` }}>
+          <div id="progressSlider" className={styles.progressBar} style={{ width: `${durationWidth}px`, backgroundColor: sliderSecondaryColor }}>
             <div
               id="progressThumb"
               className={styles.thumb}
@@ -222,14 +223,15 @@ const VideoPlayer = ({ children, videoId, height, width }) => {
                 width: `${thumbRadius}px`,
                 height: `${thumbRadius}px`,
                 left: `${(progress / duration) * durationWidth - thumbRadius / 2}px`,
-                top: `${-1 * thumbRadius / 4}px`
+                top: `${-1 * thumbRadius / 4}px`,
+                backgroundColor: sliderPrimaryColor
               }}
             ></div>
-            <div className={styles.innerBar} style={{ width: `${(progress / duration) * durationWidth}px` }}></div>
+            <div className={styles.innerBar} style={{ width: `${(progress / duration) * durationWidth}px`, background: sliderPrimaryColor }}></div>
           </div>
           <div className={styles.volumeContainer}>
             {getVolumeIcon()}
-            <div id="volumeSlider" className={styles.volumeBar} style={{ width: `${volumeWidth}px` }}>
+            <div id="volumeSlider" className={styles.volumeBar} style={{ width: `${volumeWidth}px`, backgroundColor: sliderSecondaryColor }}>
               <div
                 id="volumeThumb"
                 className={styles.thumb}
@@ -239,10 +241,11 @@ const VideoPlayer = ({ children, videoId, height, width }) => {
                   width: `${thumbRadius}px`,
                   height: `${thumbRadius}px`,
                   left: `${(volume / 100) * volumeWidth - thumbRadius / 2}px`,
-                  top: `${-1 * thumbRadius / 4}px`
+                  top: `${-1 * thumbRadius / 4}px`,
+                  backgroundColor: sliderPrimaryColor
                 }}
               ></div>
-              <div className={styles.innerBar} style={{ width: `${(volume / 100) * volumeWidth}px` }}></div>
+              <div className={styles.innerBar} style={{ width: `${(volume / 100) * volumeWidth}px`, background: sliderPrimaryColor }}></div>
             </div>
           </div>
           <div onClick={toggleFullscreen}>

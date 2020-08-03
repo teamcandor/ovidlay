@@ -10,10 +10,14 @@ To use ovidlay all you need is the videoId of the YouTube video you want to add 
 import Ovidlay from "ovidlay"
 
 ...
+
 <Ovidlay 
   videoId="g1iC1h8Nt68" 
   height={500} 
   width={800}
+  themeColor="#162363"
+  sliderPrimaryColor="#fedf67"
+  sliderSecondaryColor="#ffffff"
 >
   <div style={{position: 'absolute', top: "25%", width: "100%"}}>
     <h1 style={{textAlign: "center"}}>
