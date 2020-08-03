@@ -97,6 +97,7 @@
   .controlsContainer {
     bottom: 0;
     opacity: 1;
+    transition: none;
   }
   .controls {
     border-radius: 0;
