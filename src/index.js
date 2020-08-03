@@ -13,8 +13,6 @@ import VolumeMed from "../assets/video_volume_med.svg"
 import VolumeMax from "../assets/video_volume_max.svg"
 
 const VideoPlayer = ({ children, videoId, height, width, themeColor = "black", sliderPrimaryColor = "red", sliderSecondaryColor = "white" }) => {
-  const durationWidth = 300
-  const volumeWidth = 80
   const thumbRadius = 20
 
   const [player, setPlayer] = useState(null)
@@ -24,6 +22,21 @@ const VideoPlayer = ({ children, videoId, height, width, themeColor = "black", s
   const [duration, setDuration] = useState(200)
   const [volume, setVolume] = useState(100)
   const [progressInterval, setProgressInterval] = useState(null)
+
+  const [durationWidth, setDurationWidth] = useState(300)
+  const [volumeWidth, setVolumeWidth] = useState(80)
+
+  useEffect( () => {
+    const onResize = () => {
+      const mobile = window.innerWidth <= 600
+      setDurationWidth(mobile ? 150 : 300)
+      setVolumeWidth(mobile ? 45 : 80)
+    }
+    onResize()
+    window.addEventListener("resize", onResize)
+
+    return () => window.removeEventListener("resize", onResize)
+  }, [])
 
   useEffect(() => {
     setPlayer(
@@ -37,6 +50,7 @@ const VideoPlayer = ({ children, videoId, height, width, themeColor = "black", s
         }
       })
     )
+
     const changeFullscreen = () => {
       const parentHeight = document.getElementById(`parent-${videoId}`).offsetHeight
       setFullscreen(window.innerHeight === parentHeight)
