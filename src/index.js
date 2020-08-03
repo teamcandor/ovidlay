@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react"
+import YouTubePlayer from "youtube-player"
 
 import styles from "./index.module.css"
 
@@ -26,7 +27,7 @@ const VideoPlayer = ({ children, videoId, height, width }) => {
 
   useEffect(() => {
     setPlayer(
-      new YT.Player(`player-${videoId}`, {
+      new YouTubePlayer(`player-${videoId}`, {
         videoId,
         playerVars: {
           controls: 0,
@@ -35,11 +36,7 @@ const VideoPlayer = ({ children, videoId, height, width }) => {
           fs: 0,
           cc_lang_pref: "en",
           cc_load_policy: 1,
-        },
-        events: {
-          onReady: onPlayerReady,
-          onStateChange: onPlayerStateChange,
-        },
+        }
       })
     )
     const changeFullscreen = () => {
@@ -60,6 +57,18 @@ const VideoPlayer = ({ children, videoId, height, width }) => {
   }, [])
 
   useEffect(() => {
+    if (player !== null) {
+      const l1 = player.on("ready", onPlayerReady)
+      const l2 = player.on("stateChange", onPlayerStateChange)
+
+      return () => {
+        player.off(l1)
+        player.off(l2)
+      }
+    }
+  }, [player])
+
+  useEffect(() => {
     return () => clearInterval(progressInterval)
   }, [progressInterval])
 
@@ -70,7 +79,7 @@ const VideoPlayer = ({ children, videoId, height, width }) => {
   }
 
   const onPlayerStateChange = (e) => {
-    if (e.data === YT.PlayerState.PLAYING) {
+    if (e.data === 1) {
       setPlaying(true)
     } else {
       setPlaying(false)
@@ -191,8 +200,7 @@ const VideoPlayer = ({ children, videoId, height, width }) => {
   }
 
   return (
-    <div id={`parent-${videoId}`} className={styles.parentContainer} style={{height: `${height}px`, width: `${width}px`}}>
-      <script src="https://www.youtube.com/iframe_api"></script>
+    <div id={`parent-${videoId}`} className={styles.parentContainer} style={{ height: `${height}px`, width: `${width}px` }}>
       <div id={`player-${videoId}`} className={styles.video}></div>
       {!isPlaying && (
         <div className={styles.playButton} onClick={() => player.playVideo()}>
