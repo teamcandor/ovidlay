@@ -13,7 +13,10 @@ import VolumeMed from "../assets/video_volume_med.svg"
 import VolumeMax from "../assets/video_volume_max.svg"
 
 const VideoPlayer = ({ children, videoId, height, width, themeColor = "black", sliderPrimaryColor = "red", sliderSecondaryColor = "white" }) => {
+
+  
   const thumbRadius = 20
+  const volumeWidth = 80
 
   const [player, setPlayer] = useState(null)
   const [isPlaying, setPlaying] = useState(false)
@@ -24,20 +27,18 @@ const VideoPlayer = ({ children, videoId, height, width, themeColor = "black", s
   const [progressInterval, setProgressInterval] = useState(null)
 
   const [durationWidth, setDurationWidth] = useState(300)
-  const [volumeWidth, setVolumeWidth] = useState(80)
 
   useEffect( () => {
     const onResize = () => {
-      const mobile = window.innerWidth <= 600
-      setDurationWidth(mobile ? 150 : 300)
-      setVolumeWidth(mobile ? 45 : 80)
+      const sliderWidth = document.getElementById(`progressSlider-${videoId}`).getBoundingClientRect().width
+      setDurationWidth(sliderWidth)
     }
     onResize()
     window.addEventListener("resize", onResize)
 
     return () => window.removeEventListener("resize", onResize)
   }, [])
-
+ 
   useEffect(() => {
     setPlayer(
       new YouTubePlayer(`player-${videoId}`, {
@@ -100,12 +101,9 @@ const VideoPlayer = ({ children, videoId, height, width, themeColor = "black", s
 
   const updateProgress = (e) => {
     //checks if dragging progress bar
-    const sliderStatus = document.getElementById("progressSlider").getAttribute("data-is-progress-drag")
+    const sliderStatus = document.getElementById(`progressSlider-${videoId}`).getAttribute("data-is-progress-drag")
     if (!sliderStatus || sliderStatus === "false") {
       setProgress(e.target.getCurrentTime())
-    }
-    else {
-      setTimeout(() => {}, 1500)
     }
   }
 
@@ -161,12 +159,12 @@ const VideoPlayer = ({ children, videoId, height, width, themeColor = "black", s
 
     let parent, setter
 
-    if (e.target.id === "progressThumb") {
-      parent = document.getElementById("progressSlider")
+    if (e.target.id === `progressThumb-${videoId}`) {
+      parent = document.getElementById(`progressSlider-${videoId}`)
       setter = handleProgressChange
       parent.setAttribute("data-is-progress-drag", true) //allows interval to know if progress is being dragged
-    } else if (e.target.id === "volumeThumb") {
-      parent = document.getElementById("volumeSlider")
+    } else if (e.target.id === `volumeThumb-${videoId}`) {
+      parent = document.getElementById(`volumeSlider-${videoId}`)
       setter = handleVolumeChange
     }
     document.onmousemove = trackThumb(e.target, parent, setter)
@@ -185,7 +183,7 @@ const VideoPlayer = ({ children, videoId, height, width, themeColor = "black", s
     document.ontouchmove = null
     document.ontouchend = null
 
-    document.getElementById("progressSlider").setAttribute("data-is-progress-drag", false)
+    document.getElementById(`progressSlider-${videoId}`).setAttribute("data-is-progress-drag", false)
   }
 
   const trackThumb = (thumb, parent, setter, isMobile = false) => {
@@ -223,13 +221,13 @@ const VideoPlayer = ({ children, videoId, height, width, themeColor = "black", s
         </div>
       )}
       <div className={styles.controlsContainer}>
-        <div className={styles.controls} style={{ backgroundColor: themeColor }}>
+        <div className={styles.controls}>
           <div onClick={togglePlay}>
             {isPlaying ? <VideoPause className={styles.button} /> : <VideoPlay className={styles.button} />}
           </div>
-          <div id="progressSlider" className={styles.progressBar} style={{ width: `${durationWidth}px`, backgroundColor: sliderSecondaryColor }}>
+          <div id={`progressSlider-${videoId}`} className={styles.progressBar} style={{backgroundColor: sliderSecondaryColor }}>
             <div
-              id="progressThumb"
+              id={`progressThumb-${videoId}`}
               className={styles.thumb}
               onMouseDown={onThumbDown}
               onTouchStart={onThumbDown}
@@ -245,9 +243,9 @@ const VideoPlayer = ({ children, videoId, height, width, themeColor = "black", s
           </div>
           <div className={styles.volumeContainer}>
             {getVolumeIcon()}
-            <div id="volumeSlider" className={styles.volumeBar} style={{ width: `${volumeWidth}px`, backgroundColor: sliderSecondaryColor }}>
+            <div id={`volumeSlider-${videoId}`} className={styles.volumeBar} style={{ width: `${volumeWidth}px`, backgroundColor: sliderSecondaryColor }}>
               <div
-                id="volumeThumb"
+                id={`volumeThumb-${videoId}`}
                 className={styles.thumb}
                 onMouseDown={onThumbDown}
                 onTouchStart={onThumbDown}
