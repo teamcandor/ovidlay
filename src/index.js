@@ -12,7 +12,7 @@ import VolumeLow from "../assets/video_volume_low.svg"
 import VolumeMed from "../assets/video_volume_med.svg"
 import VolumeMax from "../assets/video_volume_max.svg"
 
-const VideoPlayer = ({ children, videoId, height, width, themeColor = "black", sliderPrimaryColor = "red", sliderSecondaryColor = "white" }) => {
+const VideoPlayer = ({ children, videoId, height, width, playButtonColor = "black", sliderPrimaryColor = "red", sliderSecondaryColor = "white" }) => {
 
   
   const thumbRadius = 20
@@ -216,7 +216,7 @@ const VideoPlayer = ({ children, videoId, height, width, themeColor = "black", s
     <div id={`parent-${videoId}`} className={styles.parentContainer} style={{ height: `${height}px`, width: `${width}px` }}>
       <div id={`player-${videoId}`} className={styles.video}></div>
       {!isPlaying && (
-        <div className={styles.playButton} onClick={() => player.playVideo()} style={{ backgroundColor: themeColor }}>
+        <div className={styles.playButton} onClick={() => player.playVideo()} style={{ backgroundColor: playButtonColor }}>
           <VideoPlay />
         </div>
       )}
