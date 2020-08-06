@@ -15,7 +15,7 @@ import Ovidlay from "ovidlay"
   videoId="g1iC1h8Nt68" 
   height={500} 
   width={800}
-  themeColor="#162363"
+  playButtonColor="#162363"
   sliderPrimaryColor="#fedf67"
   sliderSecondaryColor="#ffffff"
 >
@@ -26,7 +26,7 @@ import Ovidlay from "ovidlay"
   </div>
 </Ovidlay>
 ```
-![image](https://user-images.githubusercontent.com/24358521/89209205-d8a3b800-d58b-11ea-9c65-fe578b1c0857.png)
+![image](https://user-images.githubusercontent.com/24358521/89574212-c8911000-d7f9-11ea-91aa-2eafd1eaa01a.png)
 
 ## Props
 
