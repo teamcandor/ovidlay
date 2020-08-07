@@ -1,6 +1,6 @@
 {
   "name": "ovidlay",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Customizable YouTube video overlay for React.js",
   "main": "dist/index.js",
   "scripts": {
