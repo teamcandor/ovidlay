@@ -40,7 +40,7 @@
   bottom: 0;
   width: 100%;
   transition: ease-in-out 0.1s opacity;
-  background: linear-gradient(rgba(255,255,255,0), rgba(0,0,0, 0.75));
+  background: linear-gradient(rgba(255,255,255,0) 20%, rgba(0,0,0, 0.75));
 }
 
 .controls {
@@ -65,7 +65,7 @@
 }
 
 .volumeBar {
-  margin-left: 5px;
+  margin-left: 10px;
 }
 
 .volumeContainer {
@@ -86,7 +86,8 @@
 }
 
 .progressBar {
-  flex: 0.9;
+  flex: 1;
+  max-width: 65%;
 }
 
 .thumb {
@@ -94,6 +95,17 @@
   cursor: pointer;
   border-radius: 50%;
   box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.5), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.progressDisplay {
+  position: absolute;
+  height: 20px;
+  width: 35px;
+  top: -25px;
+  left: -7.5px;
+  color: white;
+  text-shadow: 0px 0px 2px black;
+  font-weight: bold;
 }
 
 @media (max-width: 600px){

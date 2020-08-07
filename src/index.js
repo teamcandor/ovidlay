@@ -14,7 +14,6 @@ import VolumeMax from "../assets/video_volume_max.svg"
 
 const VideoPlayer = ({ children, videoId, height, width, playButtonColor = "black", sliderPrimaryColor = "red", sliderSecondaryColor = "white" }) => {
 
-  
   const thumbRadius = 20
   const volumeWidth = 80
 
@@ -25,20 +24,21 @@ const VideoPlayer = ({ children, videoId, height, width, playButtonColor = "blac
   const [duration, setDuration] = useState(200)
   const [volume, setVolume] = useState(100)
   const [progressInterval, setProgressInterval] = useState(null)
-
+  const [showTimestamp, setShowTimestamp] = useState(false)
   const [durationWidth, setDurationWidth] = useState(300)
 
-  useEffect( () => {
-    const onResize = () => {
-      const sliderWidth = document.getElementById(`progressSlider-${videoId}`).getBoundingClientRect().width
-      setDurationWidth(sliderWidth)
-    }
+  const onResize = () => {
+    const sliderWidth = document.getElementById(`progressSlider-${videoId}`).getBoundingClientRect().width
+    setDurationWidth(sliderWidth)
+  }
+
+  useEffect(() => {
     onResize()
     window.addEventListener("resize", onResize)
 
     return () => window.removeEventListener("resize", onResize)
   }, [])
- 
+
   useEffect(() => {
     setPlayer(
       new YouTubePlayer(`player-${videoId}`, {
@@ -55,6 +55,7 @@ const VideoPlayer = ({ children, videoId, height, width, playButtonColor = "blac
     const changeFullscreen = () => {
       const parentHeight = document.getElementById(`parent-${videoId}`).offsetHeight
       setFullscreen(window.innerHeight === parentHeight)
+      onResize()
     }
     document.addEventListener("fullscreenchange", changeFullscreen)
     document.addEventListener("mozfullscreenchange", changeFullscreen)
@@ -145,7 +146,7 @@ const VideoPlayer = ({ children, videoId, height, width, playButtonColor = "blac
   const handleProgressChange = (x) => {
     const val = convertThumbToValue(x, durationWidth, duration)
     setProgress(val)
-    player.seekTo(val)
+
   }
 
   const handleVolumeChange = (x) => {
@@ -177,6 +178,11 @@ const VideoPlayer = ({ children, videoId, height, width, playButtonColor = "blac
   const onThumbUp = (e) => {
     e.preventDefault()
 
+    setProgress((prev) => {
+      player.seekTo(prev, true)
+      return prev
+    })
+
     document.onmousemove = null
     document.onmouseup = null
 
@@ -187,6 +193,7 @@ const VideoPlayer = ({ children, videoId, height, width, playButtonColor = "blac
   }
 
   const trackThumb = (thumb, parent, setter, isMobile = false) => {
+    setShowTimestamp(true)
     if (!parent) return null
     let currX
     const thumbOffset = Math.floor(thumbRadius / 2)
@@ -212,6 +219,12 @@ const VideoPlayer = ({ children, videoId, height, width, playButtonColor = "blac
     }
   }
 
+  const getTimestamp = () => {
+    const minutes = Math.floor(progress / 60)
+    const seconds = `${Math.floor(progress % 60)}`.padStart(2, "0")
+    return `${minutes}:${seconds}`
+  }
+
   return (
     <div id={`parent-${videoId}`} className={styles.parentContainer} style={{ height: `${height}px`, width: `${width}px` }}>
       <div id={`player-${videoId}`} className={styles.video}></div>
@@ -220,17 +233,18 @@ const VideoPlayer = ({ children, videoId, height, width, playButtonColor = "blac
           <VideoPlay />
         </div>
       )}
-      <div className={styles.controlsContainer}>
+      <div className={styles.controlsContainer} onMouseLeave={() => setShowTimestamp(false)}>
         <div className={styles.controls}>
           <div onClick={togglePlay}>
             {isPlaying ? <VideoPause className={styles.button} /> : <VideoPlay className={styles.button} />}
           </div>
-          <div id={`progressSlider-${videoId}`} className={styles.progressBar} style={{backgroundColor: sliderSecondaryColor }}>
+          <div id={`progressSlider-${videoId}`} className={styles.progressBar} style={{ backgroundColor: sliderSecondaryColor }}>
             <div
               id={`progressThumb-${videoId}`}
               className={styles.thumb}
               onMouseDown={onThumbDown}
               onTouchStart={onThumbDown}
+              onMouseEnter={() => setShowTimestamp(true)}
               style={{
                 width: `${thumbRadius}px`,
                 height: `${thumbRadius}px`,
@@ -238,7 +252,15 @@ const VideoPlayer = ({ children, videoId, height, width, playButtonColor = "blac
                 top: `${-1 * thumbRadius / 4}px`,
                 backgroundColor: sliderPrimaryColor
               }}
-            ></div>
+            >
+              {showTimestamp &&
+                <div
+                  className={styles.progressDisplay}
+                >
+                  {getTimestamp()}
+                </div>
+              }
+            </div>
             <div className={styles.innerBar} style={{ width: `${(progress / duration) * durationWidth}px`, background: sliderPrimaryColor }}></div>
           </div>
           <div className={styles.volumeContainer}>
