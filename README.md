@@ -15,7 +15,7 @@ import Ovidlay from "ovidlay"
   videoId="g1iC1h8Nt68" 
   containerClassName="player"
   playButtonColor="#162363"
-  sliderPrimaryColor="#fedf67"
+  sliderPrimaryColor="#162363"
   sliderSecondaryColor="#ffffff"
 >
   <div style={{position: 'absolute', top: "25%", width: "100%"}}>
