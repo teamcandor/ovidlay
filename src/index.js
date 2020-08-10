@@ -14,9 +14,10 @@ import VolumeMax from "../assets/video_volume_max.svg"
 
 const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = "black", sliderPrimaryColor = "red", sliderSecondaryColor = "white" }) => {
 
-  const thumbRadius = 15
+
   const volumeWidth = 80
 
+  const [thumbRadius, setThumbRadius] = useState(15)
   const [player, setPlayer] = useState(null)
   const [isPlaying, setPlaying] = useState(false)
   const [isFullscreen, setFullscreen] = useState(false)
@@ -36,6 +37,10 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
   useEffect(() => {
     onResize()
     window.addEventListener("resize", onResize)
+
+    if (window.innerWidth < 600) {
+      setThumbRadius(20)
+    }
 
     return () => window.removeEventListener("resize", onResize)
   }, [])
@@ -270,7 +275,7 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
                 width: `${thumbRadius}px`,
                 height: `${thumbRadius}px`,
                 left: `${(progress / duration) * durationWidth - thumbRadius / 2}px`,
-                top: `${-1 * thumbRadius / 4}px`,
+                top: `${(thumbRadius < 20) ? (-1 * thumbRadius / 4) : (-1 * thumbRadius / 4 - 2)}px`,
                 backgroundColor: sliderPrimaryColor
               }}
             >
@@ -296,7 +301,7 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
                   width: `${thumbRadius}px`,
                   height: `${thumbRadius}px`,
                   left: `${(volume / 100) * volumeWidth - thumbRadius / 2}px`,
-                  top: `${-1 * thumbRadius / 4}px`,
+                  top: `${(thumbRadius < 20) ? (-1 * thumbRadius / 4) : (-1 * thumbRadius / 4 - 2)}px`,
                   backgroundColor: sliderPrimaryColor
                 }}
               ></div>
