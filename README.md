@@ -35,7 +35,7 @@ videoId | string | Y | YouTube video id to be used by the video player
 containerClassName | string | N | Class Name to be applied to the component (components default styling uses height & width 100%)
 playButtonColor | string | N | Background color for the play button, defaults to black (#000000)
 sliderPrimaryColor | string | N | Color of the progress and volume sliders in the overlay controls, defaults to red (#ff0000)
-sliderSecondaryColor | string | N | Color of progress and volume slider backgrounds, defaults to white (#ffffff) 
+sliderSecondaryColor | string | N | Color of progress and volume slider backgrounds, defaults to white (#ffffff) NOTE: 50% opacity is applied to this color
 
 ## Contribute
 
