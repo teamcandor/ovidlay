@@ -14,7 +14,7 @@ import VolumeMax from "../assets/video_volume_max.svg"
 
 const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = "black", sliderPrimaryColor = "red", sliderSecondaryColor = "white" }) => {
 
-  const thumbRadius = 20
+  const thumbRadius = 15
   const volumeWidth = 80
 
   const [player, setPlayer] = useState(null)
@@ -23,6 +23,7 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
   const [progress, setProgress] = useState(0)
   const [duration, setDuration] = useState(200)
   const [volume, setVolume] = useState(100)
+  const [prevVolume, setPrevVolume] = useState(0)
   const [progressInterval, setProgressInterval] = useState(null)
   const [showTimestamp, setShowTimestamp] = useState(false)
   const [durationWidth, setDurationWidth] = useState(300)
@@ -128,13 +129,27 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
 
   const getVolumeIcon = () => {
     if (volume < 1) {
-      return <VolumeMute className={styles.button} />
+      return <VolumeMute className={styles.button} onClick={onVolumeClick} />
     } else if (volume < 33) {
-      return <VolumeLow className={styles.button} />
+      return <VolumeLow className={styles.button} onClick={onVolumeClick} />
     } else if (volume < 66) {
-      return <VolumeMed className={styles.button} />
+      return <VolumeMed className={styles.button} onClick={onVolumeClick} />
     } else {
-      return <VolumeMax className={styles.button} />
+      return <VolumeMax className={styles.button} onClick={onVolumeClick} />
+    }
+  }
+
+  const onVolumeClick = () => {
+    if (volume !== 0) {
+      setPrevVolume(volume)
+      player.setVolume(0)
+      setVolume(0)
+    }
+    else {
+      const newVolume = prevVolume
+      setPrevVolume(volume)
+      player.setVolume(newVolume)
+      setVolume(newVolume)
     }
   }
 
@@ -241,9 +256,9 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
       <div className={styles.controlsContainer} onMouseLeave={() => setShowTimestamp(false)}>
         <div className={styles.controls}>
           <div onClick={togglePlay}>
-            {isPlaying ? <VideoPause className={styles.button} /> : <VideoPlay className={styles.button} />}
+            {isPlaying ? <VideoPause className={`${styles.button} ${styles.play}`} /> : <VideoPlay className={`${styles.button} ${styles.play}`} />}
           </div>
-          <div id={`progressSlider-${videoId}`} className={styles.progressBar} style={{ backgroundColor: sliderSecondaryColor }}>
+          <div id={`progressSlider-${videoId}`} className={styles.progressBar} style={{ backgroundColor: `${sliderSecondaryColor}80` }}>
             <div
               id={`progressThumb-${videoId}`}
               className={styles.thumb}
@@ -270,7 +285,7 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
           </div>
           <div className={styles.volumeContainer}>
             {getVolumeIcon()}
-            <div id={`volumeSlider-${videoId}`} className={styles.volumeBar} style={{ width: `${volumeWidth}px`, backgroundColor: sliderSecondaryColor }}>
+            <div id={`volumeSlider-${videoId}`} className={styles.volumeBar} style={{ width: `${volumeWidth}px`, backgroundColor: `${sliderSecondaryColor}80` }}>
               <div
                 id={`volumeThumb-${videoId}`}
                 className={styles.thumb}
