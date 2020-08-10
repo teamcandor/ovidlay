@@ -25,7 +25,7 @@ import Ovidlay from "ovidlay"
   </div>
 </Ovidlay>
 ```
-![image](https://user-images.githubusercontent.com/24358521/89574212-c8911000-d7f9-11ea-91aa-2eafd1eaa01a.png)
+![image](https://user-images.githubusercontent.com/24358521/89817285-e5895400-db15-11ea-8337-c7b861785ae3.png)
 
 ## Props
 
