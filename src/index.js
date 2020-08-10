@@ -52,11 +52,6 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
       })
     )
 
-    const changeFullscreen = () => {
-      const parentHeight = document.getElementById(`parent-${videoId}`).offsetHeight
-      setFullscreen(window.innerHeight === parentHeight)
-      onResize()
-    }
     document.addEventListener("fullscreenchange", changeFullscreen)
     document.addEventListener("mozfullscreenchange", changeFullscreen)
     document.addEventListener("webkitfullscreenchange", changeFullscreen)
@@ -85,6 +80,13 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
   useEffect(() => {
     return () => clearInterval(progressInterval)
   }, [progressInterval])
+
+  const changeFullscreen = () => {
+    setFullscreen(prev => {
+      return !prev
+    })
+    onResize()
+  }
 
   const onPlayerReady = (e) => {
     setProgressInterval(setInterval(() => updateProgress(e), 1000))
