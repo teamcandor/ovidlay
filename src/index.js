@@ -129,7 +129,6 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
     } else {
       document.getElementById(`parent-${videoId}`).requestFullscreen()
     }
-    onResize()
   }
 
   const getVolumeIcon = () => {

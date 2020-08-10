@@ -101,7 +101,7 @@
 
 .progressBar {
   flex: 1;
-  max-width: 90%;
+  max-width: 54%;
 }
 
 .thumb {
@@ -122,3 +122,19 @@
   font-weight: bold;
 }
 
+
+.parentContainer:fullscreen > .controlsContainer > .controls > .progressBar {
+  max-width: 100%;
+}
+
+.parentContainer:-webkit-full-screen > .controlsContainer > .controls > .progressBar {
+  max-width: 100%;
+}
+
+.parentContainer:-moz-full-screen > .controlsContainer > .controls > .progressBar {
+  max-width: 100%;
+}
+
+.parentContainer:-ms-fullscreen > .controlsContainer > .controls > .progressBar {
+  max-width: 100%;
+}
