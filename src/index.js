@@ -178,10 +178,13 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
   const onThumbUp = (e) => {
     e.preventDefault()
 
-    setProgress((prev) => {
-      player.seekTo(prev, true)
-      return prev
-    })
+    const progressSlider = document.getElementById(`progressSlider-${videoId}`)
+    if (progressSlider.getAttribute("data-is-progress-drag") === "true") {
+      setProgress((prev) => {
+        player.seekTo(prev, true)
+        return prev
+      })
+    }
 
     document.onmousemove = null
     document.onmouseup = null
@@ -189,7 +192,7 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
     document.ontouchmove = null
     document.ontouchend = null
 
-    document.getElementById(`progressSlider-${videoId}`).setAttribute("data-is-progress-drag", false)
+    progressSlider.setAttribute("data-is-progress-drag", false)
   }
 
   const trackThumb = (thumb, parent, setter, isMobile = false) => {
@@ -226,7 +229,7 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
   }
 
   return (
-    <div id={`parent-${videoId}`} className={`${styles.parentContainer} ${containerClassName ? containerClassName :""}`}>
+    <div id={`parent-${videoId}`} className={`${styles.parentContainer} ${containerClassName ? containerClassName : ""}`}>
       <div id={`player-${videoId}`} className={styles.video}></div>
       {!isPlaying && (
         <div className={styles.playButton} onClick={() => player.playVideo()} style={{ backgroundColor: playButtonColor }}>

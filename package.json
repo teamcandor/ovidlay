@@ -1,6 +1,6 @@
 {
   "name": "ovidlay",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Customizable YouTube video overlay for React.js",
   "main": "dist/index.js",
   "scripts": {
@@ -10,7 +10,9 @@
     "type": "git",
     "url": "git+https://github.com/teamcandor/ovidlay.git"
   },
-  "files": ["dist/"],
+  "files": [
+    "dist/"
+  ],
   "keywords": [
     "React",
     "YouTube",
