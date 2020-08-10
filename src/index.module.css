@@ -68,6 +68,9 @@
   background-color: #ffffff80;
 }
 
+.play {
+  margin-left: 10px;
+}
 .play:hover {
   background-color: transparent;
 }
@@ -98,7 +101,7 @@
 
 .progressBar {
   flex: 1;
-  max-width: 75%;
+  max-width: 90%;
 }
 
 .thumb {
@@ -118,3 +121,4 @@
   text-shadow: 0px 0px 2px black;
   font-weight: bold;
 }
+
