@@ -8,9 +8,8 @@ import VideoPlay from "../assets/video_play.svg"
 import EnterFullscreen from "../assets/video_enter_fullscreen.svg"
 import ExitFullscreen from "../assets/video_exit_fullscreen.svg"
 import VolumeMute from "../assets/video_volume_mute.svg"
-import VolumeLow from "../assets/video_volume_low.svg"
-import VolumeMed from "../assets/video_volume_med.svg"
-import VolumeMax from "../assets/video_volume_max.svg"
+import VolumeOn from "../assets/video_volume_on.svg"
+
 
 const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = "black", sliderPrimaryColor = "red", sliderSecondaryColor = "white" }) => {
 
@@ -136,12 +135,8 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
   const getVolumeIcon = () => {
     if (volume < 1) {
       return <VolumeMute className={styles.button} onClick={onVolumeClick} />
-    } else if (volume < 33) {
-      return <VolumeLow className={styles.button} onClick={onVolumeClick} />
-    } else if (volume < 66) {
-      return <VolumeMed className={styles.button} onClick={onVolumeClick} />
     } else {
-      return <VolumeMax className={styles.button} onClick={onVolumeClick} />
+      return <VolumeOn className={styles.button} onClick={onVolumeClick} />
     }
   }
 
