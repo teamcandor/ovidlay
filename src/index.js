@@ -324,7 +324,7 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
     }
   }
   return (
-    <div id={`parent-${videoId}`} className={`${styles.parentContainer} ${containerClassName ? containerClassName : ""}`} onClick={onPlayerClick}>
+    <div id={`parent-${videoId}`} className={`${styles.parentContainer} ${containerClassName ? containerClassName : ""}`} style={{cursor: (inactive) ? "none" : "default"}} onClick={onPlayerClick}>
       <div id={`player-${videoId}`} className={styles.video}></div>
       {!isPlaying && (
         <>
