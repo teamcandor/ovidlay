@@ -172,6 +172,26 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
     player.setVolume(val)
   }
 
+  const handleSliderClick = async (e) => {
+    const clickX = e.clientX
+    const buffer = 5
+
+    const slider = document.getElementById(`progressSlider-${videoId}`)
+    const thumb = document.getElementById(`progressThumb-${videoId}`)
+
+    const sliderArea = slider.getBoundingClientRect()
+    const thumbArea = thumb.getBoundingClientRect()
+
+    if (clickX >= thumbArea.left - buffer && clickX <= thumbArea.right + buffer) {
+      //ignore click if near thumb
+      return
+    }
+
+    const newTime = Math.floor((clickX - sliderArea.left) / durationWidth * duration)
+    player.seekTo(newTime)
+    setProgress(newTime)
+  }
+
   const onThumbDown = (e) => {
     e.preventDefault()
 
@@ -258,7 +278,7 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
           <div onClick={togglePlay}>
             {isPlaying ? <VideoPause className={`${styles.button} ${styles.play}`} /> : <VideoPlay className={`${styles.button} ${styles.play}`} />}
           </div>
-          <div id={`progressSlider-${videoId}`} className={styles.progressBar} style={{ backgroundColor: `${sliderSecondaryColor}80` }}>
+          <div id={`progressSlider-${videoId}`} onClick={handleSliderClick} className={styles.progressBar} style={{ backgroundColor: `${sliderSecondaryColor}80` }}>
             <div
               id={`progressThumb-${videoId}`}
               className={styles.thumb}
