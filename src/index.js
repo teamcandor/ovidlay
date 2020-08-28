@@ -29,6 +29,8 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
   const [showTimestamp, setShowTimestamp] = useState(false)
   const [durationWidth, setDurationWidth] = useState(300)
   const [showLoading, setShowLoading] = useState(false)
+  const [inactive, setInactive] = useState(false)
+  const [onControls, setOnControls] = useState(false)
 
   const onResize = () => {
     const sliderWidth = document.getElementById(`progressSlider-${videoId}`).getBoundingClientRect().width
@@ -44,6 +46,11 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
     }
 
     return () => window.removeEventListener("resize", onResize)
+  }, [])
+
+  useEffect(() => {
+    const clearInactiveListener = initHideListener()
+    return () => clearInactiveListener()
   }, [])
 
   useEffect(() => {
@@ -107,6 +114,7 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
       setShowLoading(false)
     } else {
       setPlaying(false)
+      setInactive(false)
     }
   }
 
@@ -197,6 +205,32 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
     setProgress(newTime)
   }
 
+  const initHideListener = () => {
+    let timer
+    const parent = document.getElementById(`parent-${videoId}`)
+
+    const inactiveLisnter = (e) => {
+      e.preventDefault()
+      setInactive(false)
+
+      if (timer) {
+        clearTimeout(timer)
+      }
+
+      timer = setTimeout(() => {
+        setInactive(true)
+      }, 3000)
+    }
+
+    parent.addEventListener("mousemove", inactiveLisnter)
+    parent.addEventListener("touchmove", inactiveLisnter)
+
+    return () => {
+      parent.removeEventListener("mousemove", inactiveLisnter)
+      parent.removeEventListener("touchmove", inactiveLisnter)
+    }
+  }
+
   const onThumbDown = (e) => {
     e.preventDefault()
 
@@ -220,7 +254,7 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
   const onThumbUp = (e) => {
     e.preventDefault()
     setPlaying((prev) => {
-      if(prev){
+      if (prev) {
         setShowLoading(true)
       }
       return prev
@@ -275,8 +309,22 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
     return `${minutes}:${seconds}`
   }
 
+
+  const onPlayerClick = (e) => {
+    e.preventDefault()
+    if (!onControls) {
+      if (isPlaying) {
+        setPlaying(true)
+        setShowLoading(false)
+      } else {
+        setPlaying(false)
+        setInactive(false)
+      }
+      togglePlay()
+    }
+  }
   return (
-    <div id={`parent-${videoId}`} className={`${styles.parentContainer} ${containerClassName ? containerClassName : ""}`}>
+    <div id={`parent-${videoId}`} className={`${styles.parentContainer} ${containerClassName ? containerClassName : ""}`} onClick={onPlayerClick}>
       <div id={`player-${videoId}`} className={styles.video}></div>
       {!isPlaying && (
         <>
@@ -289,7 +337,14 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
           }
         </>
       )}
-      <div className={styles.controlsContainer} onMouseLeave={() => setShowTimestamp(false)}>
+      <div className={styles.controlsContainer}
+        onMouseEnter={() => setOnControls(true)}
+        onMouseLeave={() => {
+          setShowTimestamp(false)
+          setOnControls(false)
+        }}
+        style={{ opacity: (inactive) ? 0 : 1 }}
+      >
         <div className={styles.controls}>
           <div onClick={togglePlay}>
             {isPlaying ? <VideoPause className={`${styles.button} ${styles.play}`} /> : <VideoPlay className={`${styles.button} ${styles.play}`} />}

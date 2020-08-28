@@ -4,6 +4,9 @@
   height: 100%;
   width: 100%;
 }
+.parentContainer > iframe {
+  pointer-events: none;
+}
 
 .parentContainer:hover>.controlsContainer {
   opacity: 1;
@@ -16,10 +19,10 @@
 
 .playButton {
   position: absolute;
-  width: 100px;
-  height: 75px;
-  top: calc(50% - 75px / 2);
-  left: calc(50% - 100px / 2);
+  width: 90px;
+  height: 65px;
+  top: calc(50% - 65px / 2);
+  left: calc(50% - 90px / 2);
   border-radius: 15px;
   display: flex;
   justify-content: center;
@@ -106,6 +109,7 @@
 .progressBar {
   flex: 1;
   max-width: 50%;
+  cursor: pointer;
 }
 
 .thumb {
