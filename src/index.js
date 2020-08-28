@@ -189,7 +189,9 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
       //ignore click if near thumb
       return
     }
-    setShowLoading(true)
+    if (isPlaying) {
+      setShowLoading(true)
+    }
     const newTime = Math.floor((clickX - sliderArea.left) / durationWidth * duration)
     player.seekTo(newTime)
     setProgress(newTime)
@@ -217,7 +219,12 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
 
   const onThumbUp = (e) => {
     e.preventDefault()
-    setShowLoading(true)
+    setPlaying((prev) => {
+      if(prev){
+        setShowLoading(true)
+      }
+      return prev
+    })
     const progressSlider = document.getElementById(`progressSlider-${videoId}`)
     if (progressSlider.getAttribute("data-is-progress-drag") === "true") {
       setProgress((prev) => {
