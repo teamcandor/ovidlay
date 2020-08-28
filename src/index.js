@@ -10,6 +10,7 @@ import ExitFullscreen from "../assets/video_exit_fullscreen.svg"
 import VolumeMute from "../assets/video_volume_mute.svg"
 import VolumeOn from "../assets/video_volume_on.svg"
 
+const loadingAnim = (<div className={styles.ldsRing}><div></div><div></div><div></div><div></div></div>)
 
 const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = "black", sliderPrimaryColor = "red", sliderSecondaryColor = "white" }) => {
 
@@ -27,6 +28,7 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
   const [progressInterval, setProgressInterval] = useState(null)
   const [showTimestamp, setShowTimestamp] = useState(false)
   const [durationWidth, setDurationWidth] = useState(300)
+  const [showLoading, setShowLoading] = useState(false)
 
   const onResize = () => {
     const sliderWidth = document.getElementById(`progressSlider-${videoId}`).getBoundingClientRect().width
@@ -102,6 +104,7 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
   const onPlayerStateChange = (e) => {
     if (e.data === 1) {
       setPlaying(true)
+      setShowLoading(false)
     } else {
       setPlaying(false)
     }
@@ -186,7 +189,7 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
       //ignore click if near thumb
       return
     }
-
+    setShowLoading(true)
     const newTime = Math.floor((clickX - sliderArea.left) / durationWidth * duration)
     player.seekTo(newTime)
     setProgress(newTime)
@@ -214,7 +217,7 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
 
   const onThumbUp = (e) => {
     e.preventDefault()
-
+    setShowLoading(true)
     const progressSlider = document.getElementById(`progressSlider-${videoId}`)
     if (progressSlider.getAttribute("data-is-progress-drag") === "true") {
       setProgress((prev) => {
@@ -269,9 +272,15 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
     <div id={`parent-${videoId}`} className={`${styles.parentContainer} ${containerClassName ? containerClassName : ""}`}>
       <div id={`player-${videoId}`} className={styles.video}></div>
       {!isPlaying && (
-        <div className={styles.playButton} onClick={() => player.playVideo()} style={{ backgroundColor: playButtonColor }}>
-          <VideoPlay />
-        </div>
+        <>
+          {
+            (showLoading)
+              ? <div className={`${styles.playButton} ${styles.loadingContainer}`}>{loadingAnim}</div>
+              : <div className={styles.playButton} onClick={() => player.playVideo()} style={{ backgroundColor: playButtonColor }}>
+                <VideoPlay></VideoPlay>
+              </div>
+          }
+        </>
       )}
       <div className={styles.controlsContainer} onMouseLeave={() => setShowTimestamp(false)}>
         <div className={styles.controls}>
