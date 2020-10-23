@@ -112,8 +112,8 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
     if (e.data === 1) {
       setPlaying(true)
       setShowLoading(false)
-    } 
-    else if(e.data === 3) {
+    }
+    else if (e.data === 3) {
       setShowLoading(true)
     }
     else {
@@ -187,31 +187,43 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
     player.setVolume(val)
   }
 
-  const handleSliderClick = async (e) => {
-    const clickX = e.clientX
-    const buffer = 5
+  const handleSliderClick = (sliderType) => {
+    const sliderName = `${sliderType}Slider-${videoId}`
+    const thumbName = `${sliderType}Thumb-${videoId}`
 
-    const slider = document.getElementById(`progressSlider-${videoId}`)
-    const thumb = document.getElementById(`progressThumb-${videoId}`)
+    return async (e) => {
+      const clickX = e.clientX
+      const buffer = 5
 
-    const sliderArea = slider.getBoundingClientRect()
-    const thumbArea = thumb.getBoundingClientRect()
+      const slider = document.getElementById(sliderName)
+      const thumb = document.getElementById(thumbName)
 
-    if (clickX >= thumbArea.left - buffer && clickX <= thumbArea.right + buffer) {
-      //ignore click if near thumb
-      return
+      const sliderArea = slider.getBoundingClientRect()
+      const thumbArea = thumb.getBoundingClientRect()
+
+      if (clickX >= thumbArea.left - buffer && clickX <= thumbArea.right + buffer) {
+        //ignore click if near thumb
+        return
+      }
+      if(sliderType === 'progress'){
+        if (isPlaying) {
+          setShowLoading(true)
+         }
+         const newTime = Math.floor((clickX - sliderArea.left) / durationWidth * duration)
+         player.seekTo(newTime)
+         setProgress(newTime)
+      }
+      else {
+        const newVolume = Math.floor((clickX - sliderArea.left) / volumeWidth * 100)
+        player.setVolume(newVolume)
+        setVolume(newVolume)
+      }
     }
-    if (isPlaying) {
-      setShowLoading(true)
-    }
-    const newTime = Math.floor((clickX - sliderArea.left) / durationWidth * duration)
-    player.seekTo(newTime)
-    setProgress(newTime)
   }
 
   const initHideListener = () => {
     let timer
-    const parent = document.getElementById(`parent-${videoId}`)
+    const parent = document.getElementById(`parent-${ videoId }`)
 
     const inactiveLisnter = (e) => {
       e.preventDefault()
@@ -240,12 +252,12 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
 
     let parent, setter
 
-    if (e.target.id === `progressThumb-${videoId}`) {
-      parent = document.getElementById(`progressSlider-${videoId}`)
+    if (e.target.id === `progressThumb-${ videoId }`) {
+      parent = document.getElementById(`progressSlider-${ videoId }`)
       setter = handleProgressChange
-      parent.setAttribute("data-is-progress-drag", true) //allows interval to know if progress is being dragged
-    } else if (e.target.id === `volumeThumb-${videoId}`) {
-      parent = document.getElementById(`volumeSlider-${videoId}`)
+      parent.setAttribute("data-is-progress-drag", true) //allows interval to know if slider is being dragged
+    } else if (e.target.id === `volumeThumb-${ videoId }`) {
+      parent = document.getElementById(`volumeSlider-${ videoId }`)
       setter = handleVolumeChange
     }
     document.onmousemove = trackThumb(e.target, parent, setter)
@@ -263,13 +275,14 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
       }
       return prev
     })
-    const progressSlider = document.getElementById(`progressSlider-${videoId}`)
+    const progressSlider = document.getElementById(`progressSlider-${ videoId }`)
     if (progressSlider.getAttribute("data-is-progress-drag") === "true") {
       setProgress((prev) => {
         player.seekTo(prev, true)
         return prev
       })
     }
+
 
     document.onmousemove = null
     document.onmouseup = null
@@ -299,7 +312,7 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
         } else if (newThumbX > rightBound) {
           thumb.style.left = rightBound
         } else {
-          thumb.style.left = `${newThumbX}px` //not updating
+          thumb.style.left = `${ newThumbX }px` //not updating
         }
         setter(newThumbX)
         currX = isMobile ? e.changedTouches[0].clientX : e.clientX
@@ -310,7 +323,7 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
   const getTimestamp = () => {
     const minutes = Math.floor(progress / 60)
     const seconds = `${Math.floor(progress % 60)}`.padStart(2, "0")
-    return `${minutes}:${seconds}`
+    return `${ minutes }:${ seconds }`
   }
 
 
@@ -328,13 +341,13 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
     }
   }
   return (
-    <div id={`parent-${videoId}`} className={`${styles.parentContainer} ${containerClassName ? containerClassName : ""}`} style={{cursor: (inactive) ? "none" : "default"}} onClick={onPlayerClick}>
-      <div id={`player-${videoId}`} className={styles.video}></div>
+    <div id={`parent-${ videoId }`} className={`${ styles.parentContainer } ${ containerClassName ? containerClassName : "" } `} style={{ cursor: (inactive) ? "none" : "default" }} onClick={onPlayerClick}>
+      <div id={`player-${ videoId }`} className={styles.video}></div>
       {!isPlaying && (
         <>
           {
             (showLoading)
-              ? <div className={`${styles.playButton} ${styles.loadingContainer}`}>{loadingAnim}</div>
+              ? <div className={`${ styles.playButton } ${ styles.loadingContainer } `}>{loadingAnim}</div>
               : <div className={styles.playButton} onClick={() => player.playVideo()} style={{ backgroundColor: playButtonColor }}>
                 <VideoPlay></VideoPlay>
               </div>
@@ -351,20 +364,20 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
       >
         <div className={styles.controls}>
           <div onClick={togglePlay}>
-            {isPlaying ? <VideoPause className={`${styles.button} ${styles.play}`} /> : <VideoPlay className={`${styles.button} ${styles.play}`} />}
+            {isPlaying ? <VideoPause className={`${ styles.button } ${ styles.play } `} /> : <VideoPlay className={`${ styles.button } ${ styles.play } `} />}
           </div>
-          <div id={`progressSlider-${videoId}`} onClick={handleSliderClick} className={styles.progressBar} style={{ backgroundColor: `${sliderSecondaryColor}80` }}>
+          <div id={`progressSlider-${ videoId }`} onClick={handleSliderClick('progress')} className={styles.progressBar} style={{ backgroundColor: `${ sliderSecondaryColor }80` }}>
             <div
-              id={`progressThumb-${videoId}`}
+              id={`progressThumb-${ videoId }`}
               className={styles.thumb}
               onMouseDown={onThumbDown}
               onTouchStart={onThumbDown}
               onMouseEnter={() => setShowTimestamp(true)}
               style={{
-                width: `${thumbRadius}px`,
-                height: `${thumbRadius}px`,
-                left: `${(progress / duration) * durationWidth - thumbRadius / 2}px`,
-                top: `${(thumbRadius < 20) ? (-1 * thumbRadius / 4) : (-1 * thumbRadius / 4 - 2)}px`,
+                width: `${ thumbRadius }px`,
+                height: `${ thumbRadius }px`,
+                left: `${ (progress / duration) * durationWidth - thumbRadius / 2 }px`,
+                top: `${ (thumbRadius < 20) ? (-1 * thumbRadius / 4) : (-1 * thumbRadius / 4 - 2) }px`,
                 backgroundColor: sliderPrimaryColor
               }}
             >
@@ -376,25 +389,25 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
                 </div>
               }
             </div>
-            <div className={styles.innerBar} style={{ width: `${(progress / duration) * durationWidth}px`, background: sliderPrimaryColor }}></div>
+            <div className={styles.innerBar} style={{ width: `${ (progress / duration) * durationWidth }px`, background: sliderPrimaryColor }}></div>
           </div>
           <div className={styles.volumeContainer}>
             {getVolumeIcon()}
-            <div id={`volumeSlider-${videoId}`} className={styles.volumeBar} style={{backgroundColor: `${sliderSecondaryColor}80` }}>
+            <div id={`volumeSlider-${ videoId }`} onClick={handleSliderClick('volume')} className={styles.volumeBar} style={{ backgroundColor: `${ sliderSecondaryColor }80` }}>
               <div
-                id={`volumeThumb-${videoId}`}
+                id={`volumeThumb-${ videoId }`}
                 className={styles.thumb}
                 onMouseDown={onThumbDown}
                 onTouchStart={onThumbDown}
                 style={{
-                  width: `${thumbRadius}px`,
-                  height: `${thumbRadius}px`,
-                  left: `${(volume / 100) * volumeWidth - thumbRadius / 2}px`,
-                  top: `${(thumbRadius < 20) ? (-1 * thumbRadius / 4) : (-1 * thumbRadius / 4 - 2)}px`,
+                  width: `${ thumbRadius }px`,
+                  height: `${ thumbRadius }px`,
+                  left: `${ (volume / 100) * volumeWidth - thumbRadius / 2 }px`,
+                  top: `${ (thumbRadius < 20) ? (-1 * thumbRadius / 4) : (-1 * thumbRadius / 4 - 2) }px`,
                   backgroundColor: sliderPrimaryColor
                 }}
               ></div>
-              <div className={styles.innerBar} style={{ width: `${(volume / 100) * volumeWidth}px`, background: sliderPrimaryColor }}></div>
+              <div className={styles.innerBar} style={{ width: `${ (volume / 100) * volumeWidth }px`, background: sliderPrimaryColor }}></div>
             </div>
           </div>
           <div onClick={toggleFullscreen}>

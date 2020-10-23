@@ -91,9 +91,10 @@
 }
 
 .volumeContainer {
-  flex: .5;
+  flex: .25;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .volumeContainer>svg {
@@ -111,12 +112,12 @@
 
 .progressBar {
   flex: 1;
-  max-width: 50%;
+  max-width: 65%;
 }
 
 .volumeBar {
   flex: 1;
-  max-width: 60%;
+  max-width: 55%;
 }
 
 .thumb {
@@ -153,20 +154,20 @@
   max-width: 100%;
 }
 
-.parentContainer:fullscreen>.controlsContainer>.controls>.volumeContainer {
-  flex: .12;
+.parentContainer:fullscreen>.controlsContainer>.controls>.volumeContainer>.volumeBar  {
+  max-width: 30%;
 }
 
-.parentContainer:-webkit-full-screen>.controlsContainer>.controls>.volumeContainer {
-  flex: .12;
+.parentContainer:-webkit-full-screen>.controlsContainer>.controls>.volumeContainer>.volumeBar  {
+  max-width: 30%;
 }
 
-.parentContainer:-moz-full-screen>.controlsContainer>.controls>.volumeContainer {
-  flex: .12;
+.parentContainer:-moz-full-screen>.controlsContainer>.controls>.volumeContainer>.volumeBar  {
+  max-width: 30%;
 }
 
-.parentContainer:-ms-fullscreen>.controlsContainer>.controls>.volumeContainer {
-  flex: .15;
+.parentContainer:-ms-fullscreen>.controlsContainer>.controls>.volumeContainer>.volumeBar {
+  max-width: 30%;
 }
 
 .ldsRing {
