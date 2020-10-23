@@ -4,7 +4,8 @@
   height: 100%;
   width: 100%;
 }
-.parentContainer > iframe {
+
+.parentContainer>iframe {
   pointer-events: none;
 }
 
@@ -90,6 +91,7 @@
 }
 
 .volumeContainer {
+  flex: .5;
   display: flex;
   align-items: center;
 }
@@ -104,12 +106,17 @@
   height: 6px;
   border-radius: 15px;
   margin: 0 10px;
+  cursor: pointer;
 }
 
 .progressBar {
   flex: 1;
   max-width: 50%;
-  cursor: pointer;
+}
+
+.volumeBar {
+  flex: 1;
+  max-width: 60%;
 }
 
 .thumb {
@@ -144,6 +151,22 @@
 
 .parentContainer:-ms-fullscreen>.controlsContainer>.controls>.progressBar {
   max-width: 100%;
+}
+
+.parentContainer:fullscreen>.controlsContainer>.controls>.volumeContainer {
+  flex: .12;
+}
+
+.parentContainer:-webkit-full-screen>.controlsContainer>.controls>.volumeContainer {
+  flex: .12;
+}
+
+.parentContainer:-moz-full-screen>.controlsContainer>.controls>.volumeContainer {
+  flex: .12;
+}
+
+.parentContainer:-ms-fullscreen>.controlsContainer>.controls>.volumeContainer {
+  flex: .15;
 }
 
 .ldsRing {

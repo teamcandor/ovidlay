@@ -14,9 +14,6 @@ const loadingAnim = (<div className={styles.ldsRing}><div></div><div></div><div>
 
 const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = "black", sliderPrimaryColor = "red", sliderSecondaryColor = "white" }) => {
 
-
-  const volumeWidth = 80
-
   const [thumbRadius, setThumbRadius] = useState(15)
   const [player, setPlayer] = useState(null)
   const [isPlaying, setPlaying] = useState(false)
@@ -28,13 +25,16 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
   const [progressInterval, setProgressInterval] = useState(null)
   const [showTimestamp, setShowTimestamp] = useState(false)
   const [durationWidth, setDurationWidth] = useState(300)
+  const [volumeWidth, setVolumeWidth] = useState(80)
   const [showLoading, setShowLoading] = useState(false)
   const [inactive, setInactive] = useState(false)
   const [onControls, setOnControls] = useState(false)
 
   const onResize = () => {
-    const sliderWidth = document.getElementById(`progressSlider-${videoId}`).getBoundingClientRect().width
-    setDurationWidth(sliderWidth)
+    const progressSliderWidth = document.getElementById(`progressSlider-${videoId}`).getBoundingClientRect().width
+    setDurationWidth(progressSliderWidth)
+    const volumeSliderWidth = document.getElementById(`volumeSlider-${videoId}`).getBoundingClientRect().width
+    setVolumeWidth(volumeSliderWidth)
   }
 
   useEffect(() => {
@@ -112,7 +112,11 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
     if (e.data === 1) {
       setPlaying(true)
       setShowLoading(false)
-    } else {
+    } 
+    else if(e.data === 3) {
+      setShowLoading(true)
+    }
+    else {
       setPlaying(false)
       setInactive(false)
     }
@@ -376,7 +380,7 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
           </div>
           <div className={styles.volumeContainer}>
             {getVolumeIcon()}
-            <div id={`volumeSlider-${videoId}`} className={styles.volumeBar} style={{ width: `${volumeWidth}px`, backgroundColor: `${sliderSecondaryColor}80` }}>
+            <div id={`volumeSlider-${videoId}`} className={styles.volumeBar} style={{backgroundColor: `${sliderSecondaryColor}80` }}>
               <div
                 id={`volumeThumb-${videoId}`}
                 className={styles.thumb}
