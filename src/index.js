@@ -348,7 +348,7 @@ const VideoPlayer = ({ children, containerClassName, videoId, playButtonColor = 
           {
             (showLoading)
               ? <div className={`${ styles.playButton } ${ styles.loadingContainer } `}>{loadingAnim}</div>
-              : <div className={styles.playButton} onClick={() => player.playVideo()} style={{ backgroundColor: playButtonColor }}>
+              : <div className={`${styles.playButton} ${styles.playBorder}`} onClick={() => player.playVideo()} style={{ backgroundColor: playButtonColor }}>
                 <VideoPlay></VideoPlay>
               </div>
           }

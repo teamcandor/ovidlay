@@ -24,15 +24,18 @@
   height: 65px;
   top: calc(50% - 65px / 2);
   left: calc(50% - 90px / 2);
-  border-radius: 15px;
-  border-width: 1px;
-  border-color: white;
-  border-style: solid;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.5), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.playBorder {
+  border-radius: 15px;
+  border-width: 1px;
+  border-color: white;
+  border-style: solid;
 }
 
 .playButton>svg {
