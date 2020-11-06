@@ -25,6 +25,9 @@
   top: calc(50% - 65px / 2);
   left: calc(50% - 90px / 2);
   border-radius: 15px;
+  border-width: 1px;
+  border-color: white;
+  border-style: solid;
   display: flex;
   justify-content: center;
   align-items: center;
